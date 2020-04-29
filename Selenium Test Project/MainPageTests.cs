@@ -6,7 +6,7 @@ using OpenQA.Selenium.Support.UI;
 
 namespace Selenium_Test_Project
 {
-    public class Open_My_Store_site
+    public class MainPageTests
     {
         IWebDriver driver;
         WebElemetsHelpers weHelpers;
