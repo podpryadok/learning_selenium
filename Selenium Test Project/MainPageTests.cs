@@ -4,6 +4,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
 using Selenium_Test_Project.Page_objects;
+using Selenium_Test_Project.Helpers;
 
 namespace Selenium_Test_Project
 {
@@ -13,6 +14,7 @@ namespace Selenium_Test_Project
         WebElemetsHelpers weHelpers;
         MainPageObjects mainPageObjects;
         BlousePageObjects blousePageObjects;
+        Expectant expectant;
 
         [SetUp]
         public void StartBrowser()
@@ -21,6 +23,7 @@ namespace Selenium_Test_Project
             weHelpers = new WebElemetsHelpers();
             mainPageObjects = new MainPageObjects();
             blousePageObjects = new BlousePageObjects();
+            expectant = new Expectant();
 
             //Set fullscreen
             driver.Manage().Window.Maximize();
@@ -45,8 +48,7 @@ namespace Selenium_Test_Project
             weHelpers.Click(mainPageObjects.blouse, driver);
 
             //Wait the element is appears
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement firstResult = wait.Until(e => e.FindElement(By.XPath(blousePageObjects.webElementTitle)));
+            expectant.WaitForPage(blousePageObjects.webElementTitle, driver);
 
             //Verify the page by the item name
             string title = weHelpers.ReturnText(blousePageObjects.webElementTitle, driver);

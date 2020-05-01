@@ -6,6 +6,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
+using Selenium_Test_Project.Helpers;
 using Selenium_Test_Project.Page_objects;
 
 namespace Selenium_Test_Project
@@ -16,6 +17,7 @@ namespace Selenium_Test_Project
         WebElemetsHelpers weHelpers;
         SearchResultsPageObjects SearchResultsPageObjects;
         MainPageObjects mainPageObjects;
+        Expectant expectant;
 
         [SetUp]
         public void StartBrowser()
@@ -24,6 +26,7 @@ namespace Selenium_Test_Project
             weHelpers = new WebElemetsHelpers();
             SearchResultsPageObjects = new SearchResultsPageObjects();
             mainPageObjects = new MainPageObjects();
+            expectant = new Expectant();
 
             //Set fullscreen
             driver.Manage().Window.Maximize();
@@ -49,8 +52,7 @@ namespace Selenium_Test_Project
             weHelpers.Submit(mainPageObjects.searchField, driver);
 
             //Wait when the page load
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement firstResult = wait.Until(e => e.FindElement(By.XPath(SearchResultsPageObjects.searchResultItemName)));
+            expectant.WaitForPage(SearchResultsPageObjects.searchResultItemName, driver);
 
             //Verify the item name
             string returnText = weHelpers.ReturnText(SearchResultsPageObjects.searchResultItemName, driver);
@@ -65,11 +67,16 @@ namespace Selenium_Test_Project
             weHelpers.SendKey(mainPageObjects.searchField, driver, "Dress");
             weHelpers.Submit(mainPageObjects.searchField, driver);
 
+            //Wait when the page load
+            expectant.WaitForPage(SearchResultsPageObjects.counterAreResults, driver);
+
             //Find the text with the count of result and cut the text for taking the number of it
             string numberOfResults = weHelpers.ReturnText(SearchResultsPageObjects.counterAreResults, driver).Remove(1);
 
+            string countOfResults = driver.FindElements(By.XPath("//*[@id='center_column']/ul/li")).Count.ToString();            
+
             //Verify the count of items
-            Assert.AreEqual("7", numberOfResults);
+            Assert.AreEqual(countOfResults, numberOfResults);
         }
 
         [Test]
@@ -80,8 +87,7 @@ namespace Selenium_Test_Project
             weHelpers.Click(mainPageObjects.searchButton, driver);
 
             //Wait when the page load
-            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
-            IWebElement firstResult = wait.Until(e => e.FindElement(By.XPath(SearchResultsPageObjects.searchResult)));
+            expectant.WaitForPage(SearchResultsPageObjects.searchResult, driver);
 
             //Verify the search result
             Assert.IsTrue(weHelpers.Displayed(SearchResultsPageObjects.searchResult, driver));
@@ -92,6 +98,9 @@ namespace Selenium_Test_Project
         {
             //Click on the search button with empty search field
             weHelpers.Click(mainPageObjects.searchButton, driver);
+
+            //Wait when the page load
+            expectant.WaitForPage(SearchResultsPageObjects.errorMessage, driver);
 
             //Verify error message
             Assert.IsTrue(weHelpers.Displayed(SearchResultsPageObjects.errorMessage, driver));
