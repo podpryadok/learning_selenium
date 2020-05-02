@@ -20,10 +20,10 @@ namespace Selenium_Test_Project
         public void StartBrowser()
         {
             driver = new ChromeDriver();
-            weHelpers = new WebElemetsHelpers();
+            weHelpers = new WebElemetsHelpers(driver);
             mainPageObjects = new MainPageObjects();
             blousePageObjects = new BlousePageObjects();
-            expectant = new Expectant();
+            expectant = new Expectant(driver);
 
             //Set fullscreen
             driver.Manage().Window.Maximize();
@@ -36,7 +36,7 @@ namespace Selenium_Test_Project
         public void OpenSite()
         {
             //Find the logo and verify it is displayed
-            bool logoDisplayed = weHelpers.Displayed(mainPageObjects.logo, driver);
+            bool logoDisplayed = weHelpers.Displayed(mainPageObjects.logo);
 
             Assert.AreEqual(true, logoDisplayed);
         }
@@ -45,13 +45,13 @@ namespace Selenium_Test_Project
         public void SelectItem()
         {
             //Find the blouse item, click on it and verify the item page is opened
-            weHelpers.Click(mainPageObjects.blouse, driver);
+            weHelpers.Click(mainPageObjects.blouse);
 
             //Wait the element is appears
-            expectant.WaitForPage(blousePageObjects.webElementTitle, driver);
+            expectant.WaitForPage(blousePageObjects.webElementTitle);
 
             //Verify the page by the item name
-            string title = weHelpers.ReturnText(blousePageObjects.webElementTitle, driver);
+            string title = weHelpers.ReturnText(blousePageObjects.webElementTitle);
 
             Assert.AreEqual(expected: "Blouse", actual: title);
             
@@ -61,7 +61,7 @@ namespace Selenium_Test_Project
         public void SetColor()
         {
             //Checking the color the item
-            string barColor = weHelpers.GetRGBA(mainPageObjects.mainBarMenu, driver);
+            string barColor = weHelpers.GetRGBA(mainPageObjects.mainBarMenu);
 
             Assert.AreEqual("rgba(119, 119, 119, 1)", barColor);
         }

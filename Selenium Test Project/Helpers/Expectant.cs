@@ -8,7 +8,14 @@ namespace Selenium_Test_Project.Helpers
 {
     class Expectant
     {
-        public void WaitForPage(string xpath, IWebDriver driver)
+        IWebDriver driver;
+
+        public Expectant(IWebDriver driver)
+        {
+            this.driver = driver;
+        }
+
+        public void WaitForPage(string xpath)
         {
             //Wait when the page load
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
