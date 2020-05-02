@@ -6,6 +6,8 @@ namespace Selenium_Test_Project.Page_objects
 {
     class BlousePageObjects
     {
-        public string webElementTitle = "//*[@id='center_column']/div/div/div[3]/h1";
+        private string webElementTitle = "//*[@id='center_column']/div/div/div[3]/h1";
+
+        public string WebElementTitle { get => webElementTitle; set => webElementTitle = value; }
     }
 }

@@ -39,7 +39,7 @@ namespace Selenium_Test_Project
         public void SearchFieldIsDisplayed()
         {
             //Find the search field and verify it is displayed
-            bool searchFieldIsDisplayed = weHelpers.Displayed(mainPageObjects.searchField);
+            bool searchFieldIsDisplayed = weHelpers.Displayed(mainPageObjects.SearchField);
 
             Assert.IsTrue(searchFieldIsDisplayed);
         }
@@ -48,14 +48,14 @@ namespace Selenium_Test_Project
         public void SearchWithOneResult()
         {
             //Search the item
-            weHelpers.SendKey(mainPageObjects.searchField, "Blouse");
-            weHelpers.Submit(mainPageObjects.searchField);
+            weHelpers.SendKey(mainPageObjects.SearchField, "Blouse");
+            weHelpers.Submit(mainPageObjects.SearchField);
 
             //Wait when the page load
-            expectant.WaitForPage(SearchResultsPageObjects.searchResultItemName);
+            expectant.WaitForPage(SearchResultsPageObjects.SearchResultItemName);
 
             //Verify the item name
-            string returnText = weHelpers.ReturnText(SearchResultsPageObjects.searchResultItemName);
+            string returnText = weHelpers.ReturnText(SearchResultsPageObjects.SearchResultItemName);
 
             Assert.AreEqual("Blouse", returnText);
         }
@@ -64,14 +64,14 @@ namespace Selenium_Test_Project
         public void SearchWithManyResults()
         {
             //Search the items
-            weHelpers.SendKey(mainPageObjects.searchField, "Dress");
-            weHelpers.Submit(mainPageObjects.searchField);
+            weHelpers.SendKey(mainPageObjects.SearchField, "Dress");
+            weHelpers.Submit(mainPageObjects.SearchField);
 
             //Wait when the page load
-            expectant.WaitForPage(SearchResultsPageObjects.counterAreResults);
+            expectant.WaitForPage(SearchResultsPageObjects.CounterAreResults);
 
             //Find the text with the count of result and cut the text for taking the number of it
-            string numberOfResults = weHelpers.ReturnText(SearchResultsPageObjects.counterAreResults).Remove(1);
+            string numberOfResults = weHelpers.ReturnText(SearchResultsPageObjects.CounterAreResults).Remove(1);
 
             string countOfResults = driver.FindElements(By.XPath("//*[@id='center_column']/ul/li")).Count.ToString();            
 
@@ -83,29 +83,29 @@ namespace Selenium_Test_Project
         public void ClickOnSearchButton()
         {
             //Entered the text and click on the button
-            weHelpers.SendKey(mainPageObjects.searchField, "T-shirt");
-            weHelpers.Click(mainPageObjects.searchButton);
+            weHelpers.SendKey(mainPageObjects.SearchField, "T-shirt");
+            weHelpers.Click(mainPageObjects.SearchButton);
 
             //Wait when the page load
-            expectant.WaitForPage(SearchResultsPageObjects.searchResult);
+            expectant.WaitForPage(SearchResultsPageObjects.SearchResult);
 
             //Verify the search result
-            Assert.IsTrue(weHelpers.Displayed(SearchResultsPageObjects.searchResult));
+            Assert.IsTrue(weHelpers.Displayed(SearchResultsPageObjects.SearchResult));
         }
         
         [Test]
         public void EmptySearch()
         {
             //Click on the search button with empty search field
-            weHelpers.Click(mainPageObjects.searchButton);
+            weHelpers.Click(mainPageObjects.SearchButton);
 
             //Wait when the page load
-            expectant.WaitForPage(SearchResultsPageObjects.errorMessage);
+            expectant.WaitForPage(SearchResultsPageObjects.ErrorMessage);
 
             //Verify error message
-            Assert.IsTrue(weHelpers.Displayed(SearchResultsPageObjects.errorMessage));
+            Assert.IsTrue(weHelpers.Displayed(SearchResultsPageObjects.ErrorMessage));
             //Verify error text message
-            Assert.AreEqual("Please enter a search keyword", weHelpers.ReturnText(SearchResultsPageObjects.errorMessage));
+            Assert.AreEqual("Please enter a search keyword", weHelpers.ReturnText(SearchResultsPageObjects.ErrorMessage));
         }
 
         [TearDown]
